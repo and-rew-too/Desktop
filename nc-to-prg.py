@@ -28,6 +28,6 @@ coords = df["Name"].str.split("Y", n = 1, expand = True)
 df["ypos"] = coords[1]
 
 
-df['all'] = ' ' + df['xpos'] + ' ' + df['ypos'] + '# '
+df['all'] = 'Line ' + df['xpos'] + '#' + df['ypos'] + '# ' + '250#ON#Valid#30'
 #df['A'] = '#'
 print(df)
