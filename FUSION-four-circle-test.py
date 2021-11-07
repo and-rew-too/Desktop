@@ -37,7 +37,7 @@ def run(context):
         radius = 0.15 #radius in cm for 3mm diameter want 0.15cm
         #+1 in the cell thickness is to account for the 10mm thickness that the base plate has
         #the offset, in cm, is how much space you want to give the cells between the 8 posts
-        height = (cellthick/10)*140+1
+        height = (cellthick/10)*140+0.2
         cellwidth = width/10
         celllength = length/10
         offset = 0.2
