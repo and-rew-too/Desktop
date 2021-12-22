@@ -63,7 +63,7 @@ fig.add_trace(go.Scatter(x=x_new, y=new_Pmp),
 fig.add_trace(go.Scatter(x=x_new, y=resistloss),
               row=2, col=3)
 
-fig.update_layout(height=500, width=700,
-                  title_text="Multiple Subplots with Titles")
+fig.update_layout(height=500, width=900,
+                  title_text="Shingle Width Optimization")
 
 fig.show()
