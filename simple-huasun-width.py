@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 
+#does not include shading yet... shading effect of Isc as we change the widths of fingers
+
 sheet_url = "https://docs.google.com/spreadsheets/d/12RYFtjew1XxsE4Tf3L7E2ABPJv7y6wk80gXFf52WVzU/edit#gid=0"
 pd.set_option('display.width', None)
 
