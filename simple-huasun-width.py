@@ -34,9 +34,14 @@ Voc = 0.730
 Vmp = Voc* (y_new/100 *(1-(Rs*Jsc/Voc) ) / 0.95 )
 Imp = (Jsc * 16.6 * ((x_new*0.1)-0.5) ) * 0.95
 Pmp = Imp*Vmp
-
 #below, is ignoring other factors and looking at resistive losses from increasing length
 ff_finger_laser = Voc* (y_new/100*(1-(Rs*Jsc/Voc) )) * (1-((0.00064*Jsc*(x_new/10)**2)/(48*0.0014*Voc)) )
+max_val = np.amax(ff_finger_laser)
+max_index = np.where(ff_finger_laser == max_val)
+max_x = x_new[max_index]
+
+
+
 resistloss = 0.83 * (1-((0.00064*Jsc*(x_new/10)**2)/(48*0.0014*Voc)) )
 print(resistloss)
 new_Pmp = ff_finger_laser*Imp
@@ -62,8 +67,8 @@ fig.add_trace(go.Scatter(x=x_new, y=new_Pmp),
               row=2, col=1)
 fig.add_trace(go.Scatter(x=x_new, y=resistloss),
               row=2, col=3)
+fig.add_trace(go.Scatter(x=max_x, y=[max_val]),
+              row=2, col=2)
 
 fig.update_layout(height=500, width=900,
                   title_text="Shingle Width Optimization")
-
-fig.show()
