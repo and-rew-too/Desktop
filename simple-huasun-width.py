@@ -6,9 +6,15 @@ import pandas as pd
 from scipy.optimize import curve_fit
 
 #ASSUMPTIONS MADE
-# fill factor losses predominantly in Vmp and did not include in Imp at all
-# the ideal diode equation has a n = 1 at all times
-# the Voc / Isc and Vmp / Imp ratio are equal (in reality they are off by around 6%)
+#assuming voc does not change as laser cut width decreases, it does just barely, so (error is around 0.8%)
+#assuming Jsc does not change as laser cut width decreases, IT DOES BY ABOUT (5%) 
+
+# interpolated pFF from curve fitting function, r^2 is 0.985, (error is around 0.05%) 
+# fill factor losses predominantly in Vmp and did not include in Imp at all, that fractional power losses, 
+# 90% is responsible from Vmp, Imp the other 10% (FOUND THAT FOR HUASUN, 0.90 is ratio, but other cells 0.95 is) (error is around 0.001%) 
+# the ideal diode equation has a n = 1 at all times (error is around ????) 
+# assuming value for Rs, and also assuming a lumped series resistance model for single diode equation (error is ??????) 
+# the Voc / Isc and Vmp / Imp ratio are equal (error around 6%)
 
 sheet_url = "https://docs.google.com/spreadsheets/d/12RYFtjew1XxsE4Tf3L7E2ABPJv7y6wk80gXFf52WVzU/edit#gid=0"
 pd.set_option('display.width', None)
