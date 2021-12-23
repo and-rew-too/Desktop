@@ -5,7 +5,10 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
 
-#does not include shading yet... shading effect of Isc as we change the widths of fingers
+#ASSUMPTIONS MADE
+# fill factor losses predominantly in Vmp and did not include in Imp at all
+# the ideal diode equation has a n = 1 at all times
+# the Voc / Isc and Vmp / Imp ratio are equal (in reality they are off by around 6%)
 
 sheet_url = "https://docs.google.com/spreadsheets/d/12RYFtjew1XxsE4Tf3L7E2ABPJv7y6wk80gXFf52WVzU/edit#gid=0"
 pd.set_option('display.width', None)
@@ -30,13 +33,35 @@ x_new = np.linspace(15, 160, 146)
 y_new = objective(x_new, a, c)
 
 
+
+k = 1.380*10**-23
+q = 1.602*10**-19
 Jsc = 0.038
 Rs = 1.05
 Voc = 0.730
 Vmp = Voc* (y_new/100 *(1-(Rs*Jsc/Voc) ) / 0.95 )
+
+# Isc = Jsc*16.6*((x_new*0.1)-0.5))
+# STANDARD diode equation (including Rs) is Isc - Io*(e** (q*((V+I*Rs)/ (1.1*k*T))-1)) 
+
+# right now we have Isc, Voc, n, but not Io yet
+# STANDARD diode equation solve Voc = n*k*T*ln(Isc/Io +1)
+# Io = Isc /   (   e** (q*((Voc)/ (1.1*k*T))-1 )
+
+# WITH Io, can find Imp
+## equation is: Imp = Isc - Io*(e** (q*((Vmp+Imp*Rs)/ (k*T))-1))
+# error = 100
+# Itest = 0.95*Isc
+# while error > 0.05
+	# Imp = Isc - Io*(e** (q*((Vmp+Itest*Rs)/ (k*T))-1))
+	# error = Imp-Itest
+	# Itest = Imp
+# print(Itest)
+
+
 Imp = (Jsc * 16.6 * ((x_new*0.1)-0.5) ) * 0.95
 Pmp = Imp*Vmp
-#below, is ignoring other factors and looking at resistive losses from increasing length
+#below, ignores other factors and looks at only resistive losses from increasing length (ignores shading)
 ff_finger_laser = Voc* (y_new/100*(1-(Rs*Jsc/Voc) )) * (1-((0.00064*Jsc*(x_new/10)**2)/(48*0.0014*Voc)) )
 max_val = np.amax(ff_finger_laser)
 max_index = np.where(ff_finger_laser == max_val)
@@ -74,3 +99,7 @@ fig.add_trace(go.Scatter(x=max_x, y=[max_val]),
 
 fig.update_layout(height=500, width=900,
                   title_text="Shingle Width Optimization")
+
+
+
+#does not include shading yet... shading effect of Isc as we change the widths of fingers
