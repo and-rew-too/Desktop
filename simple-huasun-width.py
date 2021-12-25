@@ -53,6 +53,9 @@ Vmp = Voc* (y_new/100 *(1-(Rs*Jsc/Voc) ) / 0.95 )
 # right now we have Isc, Voc, n, but not Io yet
 # STANDARD diode equation solve Voc = n*k*T*ln(Isc/Io +1)
 # Io = Isc /   (   e** (q*((Voc)/ (1.1*k*T))-1 )
+## how to solve for Io https://www.desmos.com/calculator/hiw9r119wh
+## how to solve for Io https://www.pveducation.org/pvcdrom/solar-cell-operation/open-circuit-voltage
+
 
 # WITH Io, can find Imp
 ## equation is: Imp = Isc - Io*(e** (q*((Vmp+Imp*Rs)/ (k*T))-1))
