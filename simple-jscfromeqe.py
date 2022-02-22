@@ -3,40 +3,42 @@ import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 import math
+q = 1.602*10**-19
 
+
+
+
+#import csv data and initialize dataframes 
 sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=0"
-url_1 = sheet_url.replace('/edit#gid=' , '/export?format=csv&gid=')
+url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 val = pd.read_csv(url_1,)
 pd.set_option('display.width', None)
+#LENGTH OF TRANSMISSION DATA IS 429 #len(df.index) = 429
+df = pd.DataFrame(np.zeros([429, 7]))
+newdf = pd.DataFrame(np.zeros([429*5, 9]))
 
 
-q = 1.602*10**19
-#LENGTH OF TRANSMISSION DATA IS 429
-#len(df.index) = 429
-df = pd.DataFrame(np.zeros([429,7]))
-#column 2, for etfe ctrl
-newdf = pd.DataFrame(np.zeros([429*5,9]))
 
 
+#repeats 5 times, as the transmission data is spaced to every 5 um wavelengths 
+#while the QE data is every 1 um wavelength
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,4])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,3] = val.iloc[i,4]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 4]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 3] = val.iloc[i, 4]
         set5 = set5+5
         #end
     else:
         continue
     #end
 #end
-
-
 #column 3, for pet ctrl
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,5])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,4] = val.iloc[i,5]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 5]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 4] = val.iloc[i, 5]
         set5 = set5+5
         #end
     else:
@@ -45,10 +47,10 @@ for i in range(0,len(val.index)):
 #end
 #column 4, for etfe hast
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,6])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,5] = val.iloc[i,6]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 6]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 5] = val.iloc[i, 6]
         set5 = set5+5
         #end
     else:
@@ -57,22 +59,21 @@ for i in range(0,len(val.index)):
 #end
 #column 5, for pet hast
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,7])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,6] = val.iloc[i,7]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 7]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 6] = val.iloc[i, 7]
         set5 = set5+5
         #end
     else:
         continue
     #end
 #end
-#column 6, for etfe suv
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,9])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,7] = val.iloc[i,9]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 8]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 7] = val.iloc[i, 8]
         set5 = set5+5
         #end
     else:
@@ -81,10 +82,10 @@ for i in range(0,len(val.index)):
 #end
 #column 7, for pet suv
 set5 = 0
-for i in range(0,len(val.index)):
-    if math.isnan(val.iloc[i,8])==False:
-        for j in range(set5,set5+5):
-            newdf.iloc[j,8] = val.iloc[i,8]
+for i in range(0, len(val.index)):
+    if math.isnan(val.iloc[i, 9]) == False:
+        for j in range(set5, set5+5):
+            newdf.iloc[j, 8] = val.iloc[i, 9]
         set5 = set5+5
         #end
     else:
@@ -94,41 +95,83 @@ for i in range(0,len(val.index)):
 
 
 
+#portion where we convert val (raw google sheets csv) to a compact df, newdf with columns
+newdf.iloc[:, 0] = val.iloc[:, 0]
+newdf.iloc[:, 1] = val.iloc[:, 1]
+newdf.iloc[:, 2] = val.iloc[:, 2]
+newdf.columns = ['wavelength', 'EQE - cougar', 'Flux - AM1.5',
+                 'STCH CTRL', 'PPE CTRL',
+                 'STCH SUV24', 'PPE SUV24',
+                 'STCH SUV100', 'PPE SUV100']
+
+
+#portion to calculate the current J per wavelength 
+finalisc = pd.DataFrame(np.zeros([2145, 6]))
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 0] = q*newdf.iloc[i, 3] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+    #finalisc.iloc[i, 0] = val.iloc[i, 4] * \
+    #       val.iloc[i, 2]*val.iloc[i, 1]*(1/10000)
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 1] = q*newdf.iloc[i, 4] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 2] = q*newdf.iloc[i, 5] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 3] = q*newdf.iloc[i, 6] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 4] = q*newdf.iloc[i, 7] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+for i in range(0, len(newdf.index)):
+    finalisc.iloc[i, 5] = q*newdf.iloc[i, 8] * \
+            newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
+print(finalisc)
 
 
 
+#portion in which we sum the overall J, and determine the final Jsc
+#has an additional 1/100 factor as the transmission data is in 90% instead of 0.9 
+finalisc.columns = ['a', 'b', 'c',
+                    'd', 'e', 'f']
+SUMA = finalisc['a'].sum()*(1/100) 
+print(SUMA)
+SUMB = finalisc['b'].sum()*(1/100)
+print(SUMB)
+SUMC = finalisc['c'].sum()*(1/100)
+print(SUMC)
+SUMD = finalisc['d'].sum()*(1/100)
+print(SUMD)
+SUME = finalisc['e'].sum()*(1/100)
+print(SUME)
+SUMF = finalisc['f'].sum()*(1/100)
+print(SUMF)
 
 
-
-
-
-newdf.iloc[:,0] = val.iloc[:,0]
-newdf.iloc[:,1] = val.iloc[:,1]
-newdf.iloc[:,2] = val.iloc[:,2]+val.iloc[:,3]
-
-newdf.columns = ['wavelength','EQE - cougar','Flux - AM1.5',
-                '125 ETFE CTRL','125 PET CTRL',
-                '125 ETFE HAST12','125 PET HAST12',
-                '125 ETFE SUV24','125 PET SUV24']
-print(newdf)
-
-
+#figure being scatter plotted and labeled 
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=newdf.iloc[:,0], y=newdf.iloc[:,3],
-                    mode='markers',
-                    name='markers'))
-fig.add_trace(go.Scatter(x=newdf.iloc[:,0], y=newdf.iloc[:,4],
-                    mode='markers',
-                    name='markers'))
-fig.add_trace(go.Scatter(x=newdf.iloc[:,0], y=newdf.iloc[:,5],
-                    mode='markers',
-                    name='markers'))
-fig.add_trace(go.Scatter(x=newdf.iloc[:,0], y=newdf.iloc[:,6],
-                    mode='markers',
-                    name='markers'))
-
+fig = make_subplots(rows=1, cols=2, subplot_titles=("wavelength vs Jsc (125 PET)",
+                                                    "wavelength vs Jsc (50 ETFE)",))
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 3],
+                         mode='markers',
+                         name='PET CTRL'), row=1, col=1)
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 4],
+                         mode='markers',
+                         name='ETFE CTRL'), row=1, col=2)
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 5],
+                         mode='markers',
+                         name='PET SUV24'), row=1, col=1)
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 6],
+                         mode='markers',
+                         name='ETFE SUV24'), row=1, col=2)
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 7],
+                         mode='markers',
+                         name='PET SUV100'), row=1, col=1)
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 8],
+                         mode='markers',
+                         name='ETFE SUV100'), row=1, col=2)
 fig.show()
-
 
 
 
