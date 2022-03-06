@@ -1,4 +1,5 @@
 import math 
+#https://www.desmos.com/calculator/j4lgpzpsn6
 
 k = 0.025 #conductivity W/mK #conductivity of air
 characteristiclength = 0.005
