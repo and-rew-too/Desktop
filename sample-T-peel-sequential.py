@@ -5,8 +5,8 @@ import numpy as np
 
 
 
-xs = ["SUV 24", "SUV 100", "SUV100+HAST12","SUV100+HAST24"]
-xh = ["HAST 30", "HAST 100", "SUV100+HAST30","SUV100+HAST60"]
+xs = ["SUV 24", "SUV 100", "SUV100+HAST30","SUV100+HAST60"]
+xh = ["HAST 30", "HAST 100", "HAST100+SUV24","HAST100+SUV48"]
 #y = [1,1,1,1,2,10,10,12,8,10,13,13,13,13,13]
 fig = make_subplots(
     rows=2, cols=2,
@@ -42,3 +42,4 @@ fig.add_trace(go.Scatter(
     ),row=2,col=2)
 fig.update_yaxes(range=[0, 45], dtick=5.0)
 fig.show()
+
