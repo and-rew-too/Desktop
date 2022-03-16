@@ -1,8 +1,12 @@
-import plotly
+import chart_studio
+import chart_studio.plotly as py
+import chart_studio.tools as tls
+
+
+from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
-import math
 
 
 #import csv data and initialize dataframes 
