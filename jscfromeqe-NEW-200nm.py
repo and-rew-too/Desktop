@@ -9,7 +9,7 @@ q = 1.602*10**-19
 
 
 #import csv data and initialize dataframes 
-sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=0"
+sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=1581004641"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 val = pd.read_csv(url_1,)
 pd.set_option('display.width', None)
@@ -129,25 +129,6 @@ for i in range(0, len(newdf.index)):
     finalisc.iloc[i, 5] = q*newdf.iloc[i, 8] * \
             newdf.iloc[i, 2]*newdf.iloc[i, 1]*(1/10000)
 print(finalisc)
-
-
-
-#portion in which we sum the overall J, and determine the final Jsc
-#has an additional 1/100 factor as the transmission data is in 90% instead of 0.9 
-finalisc.columns = ['a', 'b', 'c',
-                    'd', 'e', 'f']
-SUMA = finalisc['a'].sum()*(1/100) 
-print(SUMA)
-SUMB = finalisc['b'].sum()*(1/100)
-print(SUMB)
-SUMC = finalisc['c'].sum()*(1/100)
-print(SUMC)
-SUMD = finalisc['d'].sum()*(1/100)
-print(SUMD)
-SUME = finalisc['e'].sum()*(1/100)
-print(SUME)
-SUMF = finalisc['f'].sum()*(1/100)
-print(SUMF)
 
 
 #figure being scatter plotted and labeled 
