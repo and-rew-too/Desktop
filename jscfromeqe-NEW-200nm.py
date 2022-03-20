@@ -1,8 +1,9 @@
 import plotly
+from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
-import math
+import math 
 q = 1.602*10**-19
 
 
