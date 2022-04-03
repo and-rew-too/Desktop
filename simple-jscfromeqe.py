@@ -8,14 +8,25 @@ q = 1.602*10**-19
 
 
 
+
 #import csv data and initialize dataframes 
 sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=0"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 val = pd.read_csv(url_1,)
 pd.set_option('display.width', None)
-#LENGTH OF TRANSMISSION DATA IS 429 #len(df.index) = 429
+
 df = pd.DataFrame(np.zeros([429, 7]))
 newdf = pd.DataFrame(np.zeros([429*5, 9]))
+
+###################################################################
+#LENGTH OF TRANSMISSION DATA IS 429 #len(df.index) = 429
+def sizing(data):
+    assert len(data.index) <= 429, "list is too long, double check imported Jasco csv data"
+    return len(data.index)
+valcheck = val.iloc[:,6]
+valcheck = valcheck.dropna()
+print(sizing(valcheck))
+###################################################################
 
 
 
