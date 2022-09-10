@@ -18,7 +18,7 @@ data = [
 'X66.000Y72.000 ' ,
 'Z12.700 ' ,
 'M02 ' ]
-#testing github 0910
+#testing github 0910 push
 
 df = pd.DataFrame(data, columns = ['Name']) #converts str to a df and then splits txt to columns
 coords = df["Name"].str.split("X", n = 1, expand = True)
