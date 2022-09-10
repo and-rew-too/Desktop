@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-
+pd.set_option('display.width', None)
 data = [
 'Z12.700 ' ,
 'G1Z-1.270F203.2 ' ,
@@ -19,15 +19,25 @@ data = [
 'Z12.700 ' ,
 'M02 ' ]
 
-df = pd.DataFrame(data, columns = ['Name'])
-print(df)
+df = pd.DataFrame(data, columns = ['Name']) #converts str to a df and then splits txt to columns
 coords = df["Name"].str.split("X", n = 1, expand = True)
 df["xpos"] = coords[1]
 df["xpos"] = df["xpos"].str.slice(0,6)
 coords = df["Name"].str.split("Y", n = 1, expand = True)
 df["ypos"] = coords[1]
+df["ypos"] = df["ypos"].str.slice(0,6)
+
+df["ypos"] = df["ypos"].astype(float) #briefly converts to float for math operations
+df["ypos"] = df["ypos"].mul(1)
+df["ypos"] = df["ypos"].astype(str)
 
 
-df['all'] = 'Line ' + df['xpos'] + '#' + df['ypos'] + '# ' + '250#ON#Valid#30'
-#df['A'] = '#'
-print(df)
+
+dfwrite = 'Line#' + df['xpos'] + '#' + df['ypos'] + '#400#ON#Valid#30'
+nullboolean = dfwrite[dfwrite.isnull()]
+dfwrite.drop(nullboolean.index, inplace=True)
+
+with open('C:/users/andre/Downloads/testprg.txt', 'a') as f:
+    dfAsString = dfwrite.to_string(header=False, index=False)
+    f.write(dfAsString)
+#print(dfwrite)
