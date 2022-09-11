@@ -11,20 +11,11 @@ buffer = 7*15//10
 theta = 0
 
 img = cv.resize(img, dim, interpolation = cv.INTER_AREA)
-img = img[0:284, 0:453]
+#img = img[0:284, 0:453] #line where the image is cropped
 imgr = img
-# scale_percent = 15 #enter percentage of original size
-# buffer = 7*scale_percent//10 #set to 0 for the standard cropping in opencv
-# width = int(img.shape[1] * scale_percent / 100)
-# height = int(img.shape[0] * scale_percent / 100)
-# dim = (width, height)
-#
-#cv.imshow('Output Image', img)
-#cv.waitKey(0)
-#imgr = cv.cvtColor(imgr, cv.COLOR_BGR2GRAY)
 
 
-newimg = cv.convertScaleAbs(imgr, alpha=0.6, beta=41) #alpha from 1.0-3.0 #beta from 0-100
+newimg = cv.convertScaleAbs(imgr, alpha=1.0, beta=21) #alpha from 1.0-3.0 #beta from 0-100
 height, width = img.shape[0], img.shape[1]
 print("width: {}, height: {}".format(width, height))
 
@@ -59,5 +50,5 @@ cv.rectangle(imgr,(x,y),(x+w,y+h),(255,0,0),3) #draws the rectangle found
 
 cv.imshow('Working Image', newimg)
 cv.imshow('Output Image', imgr)
-#cv.imshow('CROP',cropped)
+cv.imshow('CROP',cropped)
 cv.waitKey(0)
