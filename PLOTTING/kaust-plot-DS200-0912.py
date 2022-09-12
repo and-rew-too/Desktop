@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 #THIS IS MOST IMPORTANT VARIABLE, CHANGES THE WAFER BEING LOOKED AT
-start = 7 #14,21,28,35
+start = 28 #14,21,28,35
 
 sheet_url = "https://docs.google.com/spreadsheets/d/1MJoo_LZrhD4qlF2OCJEpl-r85inmDwYIydU-xvpqWhc/edit#gid=1050225185"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
