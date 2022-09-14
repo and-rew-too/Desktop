@@ -1,23 +1,28 @@
 import cv2 as cv
 import numpy as np
 
-path = 'C:/Users/andre/Downloads/IMG_001DS.jpg'
-img = cv.imread(path)
+#######################################
+#Core code that finds the circular contour of print laid down
+#outputs the final pixels of dielectric print (WHEN KEYENCE IS SET TO FULL RING)
+#need to run with opencv-ds200_02 to convert pixels to microns
+#######################################
 
-width = 604
-height = 453
-dim = (604,453)
+
+path = 'C:/Users/andre/Downloads/IMG_002DS.jpg'
+img = cv.imread(path)
+#dim = (2048,1536)
 buffer = 7*15//10
 theta = 0
 
-img = cv.resize(img, dim, interpolation = cv.INTER_AREA)
+#img = cv.resize(img, dim, interpolation = cv.INTER_AREA)
 #img = img[0:284, 0:453] #line where the image is cropped
 imgr = img
 
 
-newimg = cv.convertScaleAbs(imgr, alpha=1.0, beta=21) #alpha from 1.0-3.0 #beta from 0-100
+newimg = cv.convertScaleAbs(imgr, alpha=1.6, beta=99) #alpha from 1.0-3.0 #beta from 0-100
+# alpha set to 1.9 and beta set to 20-80
 height, width = img.shape[0], img.shape[1]
-print("width: {}, height: {}".format(width, height))
+print("image width: {}, image height: {}".format(width, height))
 
 
 imgray = cv.cvtColor(newimg, cv.COLOR_BGR2GRAY) #line 22-24 finds contours in grayscale
@@ -43,12 +48,18 @@ xnew = int( x - width/2  )
 ynew = int( y - height/2 )
 cropped = cropped[ynew:ynew+height, xnew:xnew+width]
 
+
 ## below visualize the contours to help with debugging
 cv.drawContours(newimg, contours, -1, (0,255,0), 3) #draws all contours found
 cv.drawContours(newimg, [cnt], 0, (0,255,0), 3) #draws the largest contour
 cv.rectangle(imgr,(x,y),(x+w,y+h),(255,0,0),3) #draws the rectangle found
 
 cv.imshow('Working Image', newimg)
-cv.imshow('Output Image', imgr)
+cv.imshow('Output Image', img)
 cv.imshow('CROP',cropped)
 cv.waitKey(0)
+
+#PRINT THIS SIZE relatve to the number of pixels for
+#PRINTS THIS width and
+print(w)
+print(h)

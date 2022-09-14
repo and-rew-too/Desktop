@@ -1,16 +1,14 @@
 import cv2 as cv
 import numpy as np
 
-
-#IN DOWNLOADS IS A RANDOM 100x image, and at 100x this finds the legend pixel size
+#######################################
+#Auxillary code, run with same file to determine micron:pixel ratio
+#IN DOWNLOADS IMG_002DS RANDOM 100x image, so crop it to find counter for legend pixel size
 #very janky still, could optimize
-#only value important is the second printed final value, [176], [6]
+#######################################
+
 path = 'C:/Users/andre/Downloads/IMG_002DS.jpg'
 img = cv.imread(path)
-
-width = 604
-height = 453
-#dim = (604,453)
 theta = 0
 
 
@@ -47,8 +45,6 @@ CROP = cv.warpAffine( src=img, M=matrix, dsize=shape )
 xnew = int( x - width/2  )
 ynew = int( y - height/2 )
 
-
-
 ## below visualize the contours to help with debugging
 cv.drawContours(newimg, contours, -1, (0,255,0), 3) #draws all contours found
 cv.drawContours(newimg, [cnt], 0, (0,255,0), 3) #draws the largest contour
@@ -59,5 +55,4 @@ cv.imshow('Output Image', img)
 cv.imshow('CROP',CROP)
 #cv.waitKey(0)
 
-print(w)
-print(h)
+print("legend bar pixels: {}, legend bar pixels (height): {}".format(w, h))
