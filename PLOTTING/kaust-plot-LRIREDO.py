@@ -10,7 +10,7 @@ import pandas as pd
 
 # FOR 3-5 REL MODULES gid=1055303193
 
-sheet_url = "https://docs.google.com/spreadsheets/d/1PzKvxN1ARlnQVYnCtM05Cs15VzTi76UHMyJmk6CQrNs/edit#gid=1983680767"
+sheet_url = "https://docs.google.com/spreadsheets/d/1PzKvxN1ARlnQVYnCtM05Cs15VzTi76UHMyJmk6CQrNs/edit#gid=262898931"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 df = pd.read_csv(url_1,)
 print(df)
@@ -51,7 +51,7 @@ for m in range(38, 41):
    df.iloc[:, m] = df.iloc[:, m].round(decimals=4)
 pd.set_option('display.width', None)
 
-HASTboolean = df[df.iloc[:, 116].str.contains("TC-50")]
+HASTboolean = df[df.iloc[:, 116].str.contains("HAST-25")]
 print(HASTboolean)
 
 
@@ -131,14 +131,14 @@ for i in range(1, len(workdf.index)):
 workdf["TimeSpent"] = 0
 for i in range(0, len(workdf.index)):
     Sample = workdf.iloc[i, 2]
-    if Sample.find('200') != -1:
-        workdf.iloc[i, 19] = 200
-    elif Sample.find('150') != -1:
-        workdf.iloc[i, 19] = 150
-    elif Sample.find('100') != -1:
+    if Sample.find('100') != -1:
         workdf.iloc[i, 19] = 100
-    elif Sample.find("50") != -1:
+    elif Sample.find('75') != -1:
+        workdf.iloc[i, 19] = 75
+    elif Sample.find('50') != -1:
         workdf.iloc[i, 19] = 50
+    elif Sample.find("25") != -1:
+        workdf.iloc[i, 19] = 25
     else:
         pass
 print(workdf)
@@ -156,10 +156,10 @@ fig = make_subplots(rows=3, cols=2, subplot_titles=("dIsc",
 #it loops through to collect all same partids and add the index to a dummy list
 #and when it reaches a value is not the same part id, then it finally plots that collected iv data, and reinitializes dummy list for next group
 
-#values = [0,1,2,3,4] ##for NJW0003
+values = [0,1,2,3,4] ##for NJW0003
 #values = [5,6,7,8,9] ##for NJW0005
 #values = [10,11,12,13,14] ##for JW0007
-values = [15,16,17,18,19] ##for NJW0015
+#values = [15,16,17,18,19] ##for NJW0015
 
 fig.append_trace(go.Scatter(
         x=workdf.iloc[values, 19], y=workdf.iloc[values, 12], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
@@ -187,9 +187,8 @@ fig.append_trace(go.Scatter(
 
 
 
-
 fig.update_layout(height=500, width=1200,
-                  title_text="Scatterplots of electrical parameters versus hours in Temperature Cycling 22-NJW-0015")
+                  title_text="Scatterplots of electrical parameters versus hours in HAST 22-NJW-0006")
 fig.update_annotations(font_size=12)
 for ax in fig['layout']:
     if ax[:5] == 'xaxis':
