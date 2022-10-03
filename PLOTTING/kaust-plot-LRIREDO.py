@@ -188,8 +188,9 @@ fig.append_trace(go.Scatter(
 
 
 fig.update_layout(height=500, width=1200,
-                  title_text="Scatterplots of electrical parameters versus hours in HAST 22-NJW-0006")
+                  title_text="Scatterplots of electrical parameters versus hours in HAST NJW-22-0006")
 fig.update_annotations(font_size=12)
+fig.update_yaxes(range=[0, 1], dtick=0.2)
 for ax in fig['layout']:
     if ax[:5] == 'xaxis':
         fig['layout'][ax]['dtick'] = 25
