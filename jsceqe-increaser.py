@@ -10,14 +10,14 @@ val = pd.read_csv(url_1,)
 
 df = pd.DataFrame(np.zeros([81, 7]))
 #column 2, for etfe ctrl
-newdf = pd.DataFrame(np.zeros([81*5, 9]))
+newdf = pd.DataFrame(np.zeros([81*10, 9]))
 
 set5 = 0
 for i in range(0, len(val.index)):
     if math.isnan(val.iloc[i, 1]) == False:
-        for j in range(set5, set5+5):
+        for j in range(set5, set5+10):
             newdf.iloc[j, 4] = val.iloc[i, 1]
-        set5 = set5+5
+        set5 = set5+10
         #end
     else:
         continue
