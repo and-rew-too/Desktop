@@ -20,13 +20,13 @@ for i in range(0, len(df.index)):
     df.iloc[i, 1] = df.iloc[i, 2].find("REFERENCE1")
     df.iloc[i, 1] = int(df.iloc[i, 1])
 
+MAX = -187 #TRUNCATE DATAFRAME, only includes last 187
+df = df.iloc[MAX:,:] #TRUNCATE DATAFRAME
 MindexNames = df[(df.iloc[:, 1] == -1)].index
 df.drop(MindexNames, inplace=True)
 
 #these lines below initialize, application, then load in html format
 application = Flask(__name__)
-
-
 @application.route('/')
 def index():
     return render_template('index2.html')
