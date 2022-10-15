@@ -1,0 +1,126 @@
+from flask import Flask, render_template, Response
+import io
+import time
+import webbrowser
+from threading import Timer
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import datetime
+from datetime import date, timedelta
+import matplotlib
+
+sheet_url = "https://docs.google.com/spreadsheets/d/1s11-AF4lHdxQnXZpyFEb1WsjP1Y2FPt80yLf0sub7ig/edit#gid=240418990"
+url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
+# 3 ITEMS THAT NEED TO BE CONSTANT, df.iloc, and df[column] df['Time name']
+df = pd.read_csv(url_1,)
+for i in range(0, len(df.index)):
+    df.iloc[i, 1] = df.iloc[i, 2].find("REFERENCE1")
+    df.iloc[i, 1] = int(df.iloc[i, 1])
+
+MAX = -47 #TRUNCATE DATAFRAME, only includes last 187
+df = df.iloc[MAX:,:] #TRUNCATE DATAFRAME
+
+MindexNames = df[(df.iloc[:, 1] == -1)].index
+df.drop(MindexNames, inplace=True)
+
+#these lines below initialize, application, then load in html format
+application = Flask(__name__)
+
+@application.route('/')
+def index():
+    return render_template('index2.html')
+
+#these lines link directly to the matplotlib plot to display in html
+
+
+@application.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
+#these lines later create the matplotlib plot, main code here
+def create_figure():
+    fig = Figure()
+    ax = fig.add_subplot(1, 1, 1)
+    df['Measurement_Date-Time'] = pd.to_datetime(
+        df['Measurement_Date-Time'], format='%m/%d/%Y')
+    pmpmean = df['Isc_(A)'].mean()
+    P1 = (df['Isc_(A)'].sub(pmpmean)).pow(2)
+    P2 = P1.sum()
+    pmpSD = (P2 / len(df.index))**(1/2)
+    pmpUCL = pmpmean+pmpSD*3
+    pmpLCL = pmpmean-pmpSD*3
+    ax.plot(df.iloc[:, 0], df.iloc[:, 5])
+    #ax.set_xlim([date.today() - timedelta(days=90),  date.today()])
+    ax.axhline(pmpUCL, color='red')
+    ax.axhline(pmpLCL, color='red')
+    ax.axhline(pmpmean, color='#c2deb6')
+    ax.set_title('Reference-1x2 SPC Chart of Isc')
+    ax.set(xlabel='Observation', ylabel='Individual Value')
+    return fig
+
+
+@application.route('/plot2.png')
+def plot_png2():
+    fig = create_figure2()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
+def create_figure2():
+    fig = Figure()
+
+    ax = fig.add_subplot(1, 1, 1)
+    df['Measurement_Date-Time'] = pd.to_datetime(
+        df['Measurement_Date-Time'], format='%m/%d/%Y')
+    pmpmean = df['Isc_(A)'].mean()
+    P1 = (df['Isc_(A)'].sub(pmpmean)).pow(2)
+    P2 = P1.sum()
+    pmpSD = (P2 / len(df.index))**(1/2)
+    pmpUCL = pmpmean+pmpSD*3
+    pmpLCL = pmpmean-pmpSD*3
+    # crucial difference is the x-axis bounds, dates change
+    ax.plot(df.iloc[:, 0], df.iloc[:, 5])
+    ax.set_xlim([date.today() - timedelta(days=5),  date.today()])
+    ax.axhline(pmpUCL, color='red')
+    ax.axhline(pmpLCL, color='red')
+    ax.axhline(pmpmean, color='#c2deb6')
+    ax.set_title('Recent Reference-1x2 SPC Chart of Isc')
+    ax.set(xlabel='Observation', ylabel='Individual Value')
+    return fig
+
+fig, ax = plt.subplots(figsize = (8.5, 6))
+obslen = len(df['Measurement_Date-Time'].index)
+df['Measurement_Date-Time'] = np.linspace(0,obslen-1,obslen)
+
+pmpmean = df.iloc[:, 5].mean()
+P1 = (df.iloc[:, 5].sub(pmpmean)).pow(2)
+P2 = P1.sum()
+pmpSD = (P2 / len(df.index))**(1/2)
+pmpUCL = pmpmean+pmpSD*3
+pmpLCL = pmpmean-pmpSD*3
+
+# IF WANT TO PLOT DIFFERENT DATES ax.plot(df.iloc[30:, 0], df.iloc[30:, 5],zorder=1)
+ax.scatter(df.iloc[:, 0], df.iloc[:, 5], c="#167D8D", alpha=1.0, marker = "D",zorder=2)
+ax.plot(df.iloc[:, 0], df.iloc[:, 5],zorder=1)
+
+ax.axhline(pmpUCL, color='red')
+ax.axhline(pmpLCL, color='red')
+ax.axhline(pmpmean, color='#c2deb6')
+ax.set_title('Sinton Isc SPC Control Chart')
+right = 98
+ax.text(right + 0.3, pmpUCL, "UCL = " + str("{:.2f}".format(pmpUCL)), color='red')
+ax.text(right + 0.3, pmpmean, r'$\bar{x}$' + " = " + str("{:.2f}".format(pmpmean)), color='green')
+ax.text(right + 0.3, pmpLCL, "LCL = " + str("{:.2f}".format(pmpLCL)), color='red')
+ax.set(xlabel='Observation', ylabel='Individual Value')
+
+today = date.today()
+d1 = today.strftime("%d-%m-%Y")
+fig.savefig("SintonChart" + d1 + "SD=" + str("{:.3f}".format(pmpSD))+ ".png")
