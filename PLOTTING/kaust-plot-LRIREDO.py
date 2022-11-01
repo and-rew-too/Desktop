@@ -143,6 +143,7 @@ for i in range(0, len(workdf.index)):
         pass
 print(workdf)
 
+df.to_csv (r'C:\Users\andre\lri-hast.csv', index = False, header=True)
 
 fig = make_subplots(rows=3, cols=2, subplot_titles=("dIsc",
                                                     "dVoc",
@@ -156,43 +157,48 @@ fig = make_subplots(rows=3, cols=2, subplot_titles=("dIsc",
 #it loops through to collect all same partids and add the index to a dummy list
 #and when it reaches a value is not the same part id, then it finally plots that collected iv data, and reinitializes dummy list for next group
 
+
 values = [0,1,2,3,4] ##for NJW0003
 #values = [5,6,7,8,9] ##for NJW0005
 #values = [10,11,12,13,14] ##for JW0007
 #values = [15,16,17,18,19] ##for NJW0015
+#values = [20,21,22,23,24]
+#values = [25,26,27,28,29]
+#values = [30,31,32,33,34]
 
 fig.append_trace(go.Scatter(
         x=workdf.iloc[values, 19], y=workdf.iloc[values, 12], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=1, col=1)  # Isc
 fig.append_trace(go.Scatter(
-        x=workdf.iloc[values, 19], y=workdf.iloc[values, 14], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
+        x=workdf.iloc[values, 19], y=workdf.iloc[values, 13], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=1, col=2)  # Voc
 
 fig.append_trace(go.Scatter(
-        x=workdf.iloc[values, 19], y=workdf.iloc[values, 15], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
+        x=workdf.iloc[values, 19], y=workdf.iloc[values, 14], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=2, col=1)  # Vmp
 
 fig.append_trace(go.Scatter(
-        x=workdf.iloc[values, 19], y=workdf.iloc[values, 16], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
+        x=workdf.iloc[values, 19], y=workdf.iloc[values, 15], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=2, col=2)  # Imp
 
 fig.append_trace(go.Scatter(
-        x=workdf.iloc[values, 19], y=workdf.iloc[values, 17], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
+        x=workdf.iloc[values, 19], y=workdf.iloc[values, 16], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=3, col=1)  # Pmp
 
 fig.append_trace(go.Scatter(
-        x=workdf.iloc[values, 19], y=workdf.iloc[values, 18], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
+        x=workdf.iloc[values, 19], y=workdf.iloc[values, 17], text=workdf.iloc[values, 1], hovertemplate='<br>x:%{x}<br>y:%{y}<br>m:%{text}', mode="lines+markers"
         ), row=3, col=2)  # dFF
 #values = [z+1]
 
 
 
 fig.update_layout(height=500, width=1200,
-                  title_text="Scatterplots of electrical parameters versus hours in HAST NJW-22-0006")
+                  title_text="Scatterplots of electrical parameters versus hours in HAST NJW-22-0008 Longi .45EVA")
 fig.update_annotations(font_size=12)
-fig.update_yaxes(range=[0, 1], dtick=0.2)
+fig.update_yaxes(range=[-2, 3], dtick=0.5)
 for ax in fig['layout']:
     if ax[:5] == 'xaxis':
         fig['layout'][ax]['dtick'] = 25
 
-fig.show()
+#fig.write_html("C:/Users/andre/Desktop/NJW-22-0006.html")
+#fig.show()

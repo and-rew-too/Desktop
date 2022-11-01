@@ -35,13 +35,6 @@ fig.add_trace(go.Scatter(x=df.iloc[15:20, 1], y=df.iloc[15:20, 3],
 #fig.add_trace(go.Scatter(x=[1000], y=[64.25],
 #                         mode='markers',
 #                         marker=dict(size=12, color="Black"), name='30C Higher Irradiance Measured'))
-fig.add_trace(go.Scatter(x=[710], y=[59.18],
-                        mode='markers',
-                        marker=dict(size=12, color="Black"), name='30C Lower Irradiance Measured'))
-fig.add_trace(go.Scatter(x=[1000], y=[64.25],
-                        mode='markers',
-                        marker=dict(size=12, color="Black"), name='30C Higher Irradiance Measured'))
-
 
 
 fig.update_layout(
