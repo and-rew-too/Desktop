@@ -20,7 +20,7 @@ for i in range(0, len(df.index)):
     df.iloc[i, 1] = df.iloc[i, 2].find("REFERENCE1")
     df.iloc[i, 1] = int(df.iloc[i, 1])
 
-MAX = -187 #TRUNCATE DATAFRAME, only includes last 187
+MAX = -97 #TRUNCATE DATAFRAME, only includes last 187
 df = df.iloc[MAX:,:] #TRUNCATE DATAFRAME
 MindexNames = df[(df.iloc[:, 1] == -1)].index
 df.drop(MindexNames, inplace=True)
