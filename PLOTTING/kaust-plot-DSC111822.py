@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 directory = "C:/Users/andre/Downloads/20min130.txt"
 pd.set_option('display.width', None)
-dfL130 = pd.read_csv("C:/Users/andre/Downloads/POETR01BA-gel-20min155C-111722.txt", names=['Temp','Time','Response','Sens.'], skiprows=38, sep='\;', engine='python')
-control = pd.read_csv("C:/Users/andre/Downloads/POETR01BA-gel-uncured-111722.txt", names=['Temp','Time','Response','Sens.'], skiprows=38, sep='\;', engine='python')
+dfL130 = pd.read_csv("C:/Users/andre/Downloads/EVA-gel-20min145C-102622.txt", names=['Temp','Time','Response','Sens.'], skiprows=38, sep='\;', engine='python')
+control = pd.read_csv("C:/Users/andre/Downloads/EVA-gel-uncured-111722.txt", names=['Temp','Time','Response','Sens.'], skiprows=38, sep='\;', engine='python')
 
 LSIDE = 2100
 RSIDE = 2300 #THIS IS FROM 88.9 c TO 96 c
@@ -37,7 +37,7 @@ manualshift =  0.0
 control['Response'] = control['Response'] + abs(controlshift) - manualshift
 
 
-Ltemp = 2300
+Ltemp = 2100
 Rtemp = 5300 # AREA UNDER CURVE FROM 143C - 186C #5300 is area from 143 to 200
 
 #initializing values below
