@@ -12,7 +12,7 @@ from PIL import Image
 #https://www.geeksforgeeks.org/reading-text-from-the-image-using-tesseract/
 #https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html
 
-#for a whole folder below
+#Reading - a folder of images from googledrive
 #imlist = []
 #filelist = []
 #for file in glob.glob(r"C:\Users\Andrew Hu\Dropbox\PC\Desktop\*.jpg"):
@@ -21,25 +21,25 @@ from PIL import Image
    # filelist.append(file)
 
 
-# We then read the image with text
-path = 'C:/Users/andre/Documents/IMG_6588.jpg'
-images = cv2.imread(path)
+# Reading - single image path
+path = 'C:/Users/andre/Documents/IMG_6588.jpg' #path changing
+img = cv2.imread(path)
 
 # convert to grayscale image
-gray = cv2.cvtColor(images, cv2.COLOR_BGR2GRAY)
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (5, 5,), 0)
 edged = cv2.Canny(blurred, 75, 200) # printing edged, shows the black and with contours to remap the four corners
-newimage = cv2.convertScaleAbs(gray, alpha=1.2, beta=40) #1.0 - 3.0, then #0-100
+contimg = cv2.convertScaleAbs(gray, alpha=1.2, beta=40) #1.0 - 3.0, then #0-100
 #alpha of 1.2 works best, and beta 40 works best
-imagetostring = newimage
+imagetostring = contimg
+options = "--psm 4"
+
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
-options = "--psm 4"
 text = pytesseract.image_to_string(imagetostring,
 	config=options)
 print(text)
 
-# show the output images
 #cv2.imshow("edge for troubleshooting", edged)
 cv2.imshow("Image Input", images)
 cv2.imshow("Output In Grayscale", newimage)
