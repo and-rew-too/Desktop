@@ -1,19 +1,19 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-sheet_url = "https://docs.google.com/spreadsheets/d/1PzKvxN1ARlnQVYnCtM05Cs15VzTi76UHMyJmk6CQrNs/edit#gid=1504840331"
+sheet_url = "https://docs.google.com/spreadsheets/d/1PzKvxN1ARlnQVYnCtM05Cs15VzTi76UHMyJmk6CQrNs/edit#gid=1718830862"
 pd.set_option('display.width', None)
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 df = pd.read_csv(url_1)
 print(df)
 
 
-COL = 8 #3 is isc, 4 is voc, 7 is pmp, 8 s ff, 12 is pff, 13 is peff
+COL = 12 #3 is isc, 4 is voc, 7 is pmp, 8 s ff, 12 is pff, 13 is peff
 column_headers = df.columns.values.tolist()
 param = column_headers[COL]
 plt.ylabel('{}'.format(param))
 plt.xlabel('Hours in Damp Heat')
-plt.title('Scatterplot of {} as a function of Hours in Damp Heat'.format(param))
+plt.title('Scatterplot of Change in {} as a function of Hours in Damp Heat'.format(param))
 
 
 

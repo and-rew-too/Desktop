@@ -5,16 +5,18 @@ sheet_url = "https://docs.google.com/spreadsheets/d/1PzKvxN1ARlnQVYnCtM05Cs15VzT
 pd.set_option('display.width', None)
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 df = pd.read_csv(url_1)
-print(df)
+#print(df)
 
 #change iloc[HERE:HERE,]
-COL = 7 #3 is isc, 4 is voc, 7 is pmp
-Xt = df.iloc[8:12,0]
-Yt = df.iloc[8:12,COL]
+COL = 3 #3 is isc, 4 is voc, 7 is pmp
+
+St = 12
+Xt = df.iloc[St:St+4,0]
+Yt = df.iloc[St:St+4,COL]
 print(Yt)
 
 slope = np.polyfit(Xt,Yt,1) #slope[1] is slope, slope[2] is intercept
-Coeff = (slope[0]*100)/(df.iloc[1,COL])
+Coeff = (slope[0]*100)/(df.iloc[St,COL])
 print(slope[0])
 print(Coeff)
 

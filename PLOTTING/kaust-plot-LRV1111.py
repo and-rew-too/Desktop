@@ -9,7 +9,7 @@ url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 df = pd.read_csv(url_1)
 print(df)
 workdf = df
-COL =10 #incredibly important parameter must change this
+COL =20 #incredibly important parameter must change this
 #39 is pFF #40 pEff, #14 is Jsc #9 is Pmp #10 is FF #j01 is 43 #j02 is 44
 
 column_headers = df.columns.values.tolist()

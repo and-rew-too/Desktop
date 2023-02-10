@@ -39,7 +39,7 @@ plt.xlabel('Parameters')
 plt.ylabel('pFF_(%)')
 t = plt.title('Box plot of pFF_(%)')
 plt.grid()
-#plt.show()
+plt.show()
 
 plt.savefig('box_1.png')
 

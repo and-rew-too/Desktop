@@ -9,16 +9,18 @@ part = df
 column_headers = df.columns.values.tolist()
 
 
-
-plt.figure(figsize=(13,8)) #deactive this to have all figures in individual plots
-for i in range(1,12,2):
+plt.rcParams["font.size"]= "12"
+plt.figure(figsize=(13,8)) #deactive this to have figures in individual plots
+for i in range(1,5,2):
     y = df.iloc[0:21,i+1]
     y = y/25 #converts from N to N/mm
     plt.plot(df.iloc[0:21,i], y, label = column_headers[i])
 plt.legend(loc="lower right")
-plt.title('Fit Plot for Sequential T-Peel Testing')
+plt.title('50um ETFE1 50um POE2 T-Peel Testing')
 plt.xlabel('Extension (mm)')
 plt.ylabel('Peel Strength (N/mm)')
+
+plt.ylim([-0.05, 1.35])
 plt.grid()
 #plt.savefit("ARO1024.png")
 plt.show()

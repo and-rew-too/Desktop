@@ -10,7 +10,7 @@ url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 df = pd.read_csv(url_1)
 
 
-Projectboolean = df.loc[df['Month']!=8]
+Projectboolean = df.loc[df['Month']!=12]
 #Projectboolean = df[~df['Month'].str.contains(MonthLooking)]
 df.drop(Projectboolean.index, inplace=True)
 print(df.iloc[:,1])
