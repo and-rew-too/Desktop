@@ -5,10 +5,12 @@ import webbrowser
 from threading import Timer
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import datetime
 from datetime import date, timedelta
+import matplotlib
 
 sheet_url = "https://docs.google.com/spreadsheets/d/1s11-AF4lHdxQnXZpyFEb1WsjP1Y2FPt80yLf0sub7ig/edit#gid=240418990"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
@@ -91,7 +93,6 @@ def create_figure2():
     ax.set_title('Recent Reference-1x2 SPC Chart of Isc')
     ax.set(xlabel='Observation', ylabel='Individual Value')
     return fig
-
 
 #run the flask website on 3000 port, separate from 5000 port
 def open_browser():

@@ -18,8 +18,6 @@ ser.close()
 #ser.baudrate = 9600
 #ser.port = 'COM9'
 #ser_bytes = ser.readline()
-#print(ser)
-#ser_bytes = ser.readline()
 
 # ser.flushInput()
 # while True:

@@ -6,15 +6,18 @@ import math
 
 q = 1.602*10**-19
 
-sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=149062991"
+sheet_url = "https://docs.google.com/spreadsheets/d/1DlP7xF7aEk0xDsFkoAHK4fokn7nnX0AkwAXq0nBJSIs/edit#gid=301394801"
 url_1 = sheet_url.replace('/edit#gid=', '/export?format=csv&gid=')
 val = pd.read_csv(url_1,)
 pd.set_option('display.width', None)
 #LENGTH OF TRANSMISSION DATA IS 429
 #len(df.index) = 429
-df = pd.DataFrame(np.zeros([429, 7]))
+df = pd.DataFrame(np.zeros([463, 7]))
 #column 2, for etfe ctrl
-newdf = pd.DataFrame(np.zeros([429*5, 9]))
+newdf = pd.DataFrame(np.zeros([463*5, 9]))
+
+
+print(val.iloc[1:10,5])
 
 
 set5 = 0
@@ -28,7 +31,6 @@ for i in range(0, len(val.index)):
         continue
     #end
 #end
-
 
 #column 3, for pet ctrl
 set5 = 0
@@ -98,7 +100,9 @@ newdf.columns = ['wavelength', 'EQE - cougar', 'Flux - AM1.5',
                  'STCH SUV24', 'PPE SUV24',
                  'STCH SUV100', 'PPE SUV100']
 
-finalisc = pd.DataFrame(np.zeros([2145, 6]))
+finalisc = pd.DataFrame(np.zeros([2315, 6]))
+
+
 
 # stch ctrl
 for i in range(0, len(newdf.index)):
@@ -147,7 +151,7 @@ print(SUMF)
 fig = go.Figure()
 fig = make_subplots(rows=1, cols=2, subplot_titles=("wavelength vs Jsc (125 ETFE 50 POE)",
                                                     "wavelength vs Jsc (125 PET 50 POE)",))
-fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 3],
+fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 1],
                          mode='markers',
                          name='etfe CTRL'), row=1, col=1)
 fig.add_trace(go.Scatter(x=newdf.iloc[:, 0], y=newdf.iloc[:, 4],
